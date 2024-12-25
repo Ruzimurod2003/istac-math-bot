@@ -9,8 +9,8 @@ USERNAME = "mathruz"
 TOKEN = "7726647298:AAE4_O-N6KMSaWObeMzIKsHZtEAqWxlju6s"
 SECRET = ''.join(random.choice(string.ascii_letters) for x in range(20))
 URL = f"https://{USERNAME}.pythonanywhere.com/{SECRET}"
-ANSWERS_CHANNEL_ID = "@IstacMathAnswers"  # Answers channel
-RESULTS_CHANNEL_ID = "@IstacMathResults"  # Results channel
+ANSWERS_CHANNEL_ID = "-1002286694169"  # Answers channel
+RESULTS_CHANNEL_ID = "-1002447423828"  # Results channel
 
 telepot.api.set_proxy('http://proxy.server:3128')
 bot = telepot.Bot(TOKEN)
