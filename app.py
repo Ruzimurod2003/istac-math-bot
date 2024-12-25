@@ -39,7 +39,6 @@ def processing(msg):
     user_id = msg['from']['id']
     username = msg['from'].get('username', 'foydalanuvchi')
 
-    answers = fetch_answers_from_channel()
     if 'text' in msg:
         text = msg['text']
 
@@ -56,6 +55,7 @@ def processing(msg):
         if re.match(r'^\d{5}\|[abcd]{20}$', text):
             test_id, user_answers = text.split('|')
 
+            answers = fetch_answers_from_channel()
             if test_id in answers:
                 correct_answers = answers[test_id]
                 result = []
