@@ -43,6 +43,15 @@ def processing(msg):
     if 'text' in msg:
         text = msg['text']
 
+        # Start komandasi
+        if text.strip().lower() == "/start":
+            welcome_text = (
+                "Botga hush kelibsiz, iltimos javoblaringizni yuboring, "
+                "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
+            )
+            bot.sendMessage(user_id, welcome_text)
+            return
+        
         # Tekshiruv formati
         if re.match(r'^\d{5}\|[abcd]{20}$', text):
             test_id, user_answers = text.split('|')
