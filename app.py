@@ -3,7 +3,7 @@ import re
 import json
 from flask import Flask, request
 from pathlib import Path
-from datetime import datetime
+from datetime import datetime, timedelta
 
 # Bot sozlamalari
 USERNAME = "mathruz"
@@ -102,6 +102,12 @@ def fetch_answers_from_json():
             return json.load(f)
     return {}
 
+# GMT+5 vaqtni olish funksiyasi
+def get_gmt_plus_5_time():
+    gmt_time = datetime.now()
+    gmt_plus_5_time = gmt_time + timedelta(hours=5)
+    return gmt_plus_5_time.strftime("%Y-%m-%d %H:%M:%S")
+
 def processing(msg):
     try:
         if 'chat' in msg and msg['chat']['type'] == 'channel':
@@ -140,7 +146,7 @@ def processing(msg):
 
                     # Javoblarni ANSWERS_CHANNEL_ID'ga yuborish
                     formatted_answers = '\n'.join(f"{i+1}) {ans}" for i, ans in enumerate(right_answers))
-                    current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    current_date_time = get_gmt_plus_5_time()
                     answer_message = ANSWER_CHANNEL_MESSAGE.format(
                         test_id=test_id, formatted_answers=formatted_answers, current_date_time=current_date_time
                     )
@@ -168,7 +174,7 @@ def processing(msg):
 
                     total_questions = len(correct_answers)
                     percentage = (correct_count / total_questions) * 100
-                    submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    submission_time = get_gmt_plus_5_time()
 
                     channel_result = RESULT_CHANNEL_MESSAGE.format(
                         first_name=first_name,
