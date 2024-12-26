@@ -16,37 +16,64 @@ ANSWERS_FILE = Path("answers.json")
 
 # Bot xabarlari
 WELCOME_MESSAGE = (
-    "Botga hush kelibsiz, iltimos javoblaringizni yuboring, "
-    "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
-)
-RESTART_MESSAGE = (
-    "Botni restart qildik, iltimos javoblaringizni yuboring, "
-    "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
-)
-ERROR_MESSAGE = (
-    "Noto'g'ri formatda javob yuborildi. Bot javoblarni saqlay olmadi. "
-    "Iltimos, javoblaringizni quyidagi formatda yuboring: 12350|bcddcadcacbdcdddbadb"
-)
-INVALID_TEST_ID_MESSAGE = "Test ID topilmadi. Iltimos, mavjud test IDni yuboring."
-INVALID_FORMAT_MESSAGE = (
-    "Noto'g'ri formatda javob yuborildi. Iltimos, javoblaringizni quyidagi formatda yuboring: "
+    "Botga hush kelibsiz!\n"
+    "Iltimos, javoblaringizni quyidagi formatda yuboring:\n"
     "12350|bcddcadcacbdcdddbadb"
 )
-PROCESSING_ERROR_MESSAGE = "Xatolik yuz berdi (processing): {error_message}"
-WEBHOOK_ERROR_MESSAGE = "Xatolik yuz berdi (webhook): {error_message}"
-ANSWER_SAVED_MESSAGE = "Javoblar saqlandi: {test_id} -> {right_answers}"
-RESULT_CHANNEL_MESSAGE = (
-    "Foydalanuvchi({user_id}) @{username} ning {test_id} bo'yicha natijasi:\n{results}"
+RESTART_MESSAGE = (
+    "Botni qayta ishga tushirdik.\n"
+    "Javoblaringizni quyidagi formatda yuboring:\n"
+    "12350|bcddcadcacbdcdddbadb"
 )
-USER_RESULT_MESSAGE = "To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
-CORRECT_ANSWER_MESSAGE = "{i}. {user_ans} ✅ (To'g'ri)"
-WRONG_ANSWER_MESSAGE = "{i}. {user_ans} ❌ (Noto'g'ri - to'g'ri javob: {correct_ans})"
-TEST_SUCCESS_MESSAGE = "Bot ishlayapti"
+ERROR_MESSAGE = (
+    "Xato formatda javob yuborildi.\n"
+    "Iltimos, javoblaringizni quyidagi formatga mos holda yuboring:\n"
+    "12350|bcddcadcacbdcdddbadb"
+)
+INVALID_TEST_ID_MESSAGE = (
+    "Ko'rsatilgan Test ID ma'lumotlar bazasida topilmadi.\n"
+    "Iltimos, mavjud Test ID bilan qayta yuboring."
+)
+INVALID_FORMAT_MESSAGE = (
+    "Noto'g'ri formatda javob yuborildi.\n"
+    "Iltimos, javoblaringizni quyidagi formatga mos holda yuboring:\n"
+    "12350|bcddcadcacbdcdddbadb"
+)
+PROCESSING_ERROR_MESSAGE = (
+    "Xatolik yuz berdi (processing): {error_message}"
+)
+WEBHOOK_ERROR_MESSAGE = (
+    "Xatolik yuz berdi (webhook): {error_message}"
+)
+ANSWER_SAVED_MESSAGE = (
+    "Javoblar muvaffaqiyatli saqlandi:\n"
+    "Test ID: {test_id}\n"
+    "Javoblar: {right_answers}"
+)
 ANSWER_CHANNEL_MESSAGE = (
     "Test ID: {test_id}\n"
-    "{formatted_answers}\n"
+    "Javoblar:\n{formatted_answers}\n"
     "Saqlangan vaqt: {current_date_time}"
 )
+RESULT_CHANNEL_MESSAGE = (
+    "Foydalanuvchi ma'lumotlari:\n"
+    "Ism: {first_name}\n"
+    "Familiya: {last_name}\n"
+    "Username: @{username}\n"
+    "User ID: {user_id}\n"
+    "Jo'natgan vaqt: {submission_time}\n"
+    "\nTest natijalari:\n"
+    "Test ID: {test_id}\n"
+    "Natijalar:\n{results}\n"
+    "To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
+)
+USER_RESULT_MESSAGE = (
+    "Sizning natijalaringiz:\n"
+    "To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
+)
+CORRECT_ANSWER_MESSAGE = "{i}. {user_ans} ✅ (To'g'ri)"
+WRONG_ANSWER_MESSAGE = "{i}. {user_ans} ❌ (Noto'g'ri - to'g'ri javob: {correct_ans})"
+TEST_SUCCESS_MESSAGE = "Bot muvaffaqiyatli ishlayapti."
 
 telepot.api.set_proxy('http://proxy.server:3128')
 bot = telepot.Bot(TOKEN)
@@ -82,6 +109,8 @@ def processing(msg):
 
         user_id = msg['from']['id']
         username = msg['from'].get('username', 'foydalanuvchi')
+        first_name = msg['from'].get('first_name', 'Nomalum')
+        last_name = msg['from'].get('last_name', 'Nomalum')
 
         if 'text' in msg:
             text = msg['text'].strip().lower()
@@ -139,9 +168,19 @@ def processing(msg):
 
                     total_questions = len(correct_answers)
                     percentage = (correct_count / total_questions) * 100
+                    submission_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
                     channel_result = RESULT_CHANNEL_MESSAGE.format(
-                        user_id=user_id, username=username, test_id=test_id, results='\n'.join(result)
+                        first_name=first_name,
+                        last_name=last_name,
+                        username=username,
+                        user_id=user_id,
+                        submission_time=submission_time,
+                        test_id=test_id,
+                        results='\n'.join(result),
+                        correct_count=correct_count,
+                        total_questions=total_questions,
+                        percentage=percentage
                     )
                     bot.sendMessage(RESULTS_CHANNEL_ID, channel_result)
 
