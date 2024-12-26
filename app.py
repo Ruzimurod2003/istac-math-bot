@@ -16,64 +16,64 @@ ANSWERS_FILE = Path("answers.json")
 
 # Bot xabarlari
 WELCOME_MESSAGE = (
-    "Botga hush kelibsiz!\n"
-    "Iltimos, javoblaringizni quyidagi formatda yuboring:\n"
-    "12350|bcddcadcacbdcdddbadb"
+    "👋 <b>Botga hush kelibsiz!</b>\n"
+    "📝 <i>Iltimos, javoblaringizni quyidagi formatda yuboring:</i>\n"
+    "<code>12350|bcddcadcacbdcdddbadb</code>"
 )
 RESTART_MESSAGE = (
-    "Botni qayta ishga tushirdik.\n"
-    "Javoblaringizni quyidagi formatda yuboring:\n"
-    "12350|bcddcadcacbdcdddbadb"
+    "🔄 <b>Bot qayta ishga tushirildi!</b>\n"
+    "📝 <i>Iltimos, javoblaringizni quyidagi formatda yuboring:</i>\n"
+    "<code>12350|bcddcadcacbdcdddbadb</code>"
 )
 ERROR_MESSAGE = (
-    "Xato formatda javob yuborildi.\n"
-    "Iltimos, javoblaringizni quyidagi formatga mos holda yuboring:\n"
-    "12350|bcddcadcacbdcdddbadb"
+    "❌ <b>Xato formatda javob yuborildi!</b>\n"
+    "⚠️ <i>Iltimos, quyidagi formatga mos ravishda yuboring:</i>\n"
+    "<code>12350|bcddcadcacbdcdddbadb</code>"
 )
 INVALID_TEST_ID_MESSAGE = (
-    "Ko'rsatilgan Test ID ma'lumotlar bazasida topilmadi.\n"
-    "Iltimos, mavjud Test ID bilan qayta yuboring."
+    "❌ <b>Test ID topilmadi!</b>\n"
+    "⚠️ <i>Iltimos, mavjud Test ID bilan qayta yuboring.</i>"
 )
 INVALID_FORMAT_MESSAGE = (
-    "Noto'g'ri formatda javob yuborildi.\n"
-    "Iltimos, javoblaringizni quyidagi formatga mos holda yuboring:\n"
-    "12350|bcddcadcacbdcdddbadb"
+    "❌ <b>Xato formatda javob yuborildi!</b>\n"
+    "⚠️ <i>Iltimos, quyidagi formatga mos ravishda yuboring:</i>\n"
+    "<code>12350|bcddcadcacbdcdddbadb</code>"
 )
 PROCESSING_ERROR_MESSAGE = (
-    "Xatolik yuz berdi (processing): {error_message}"
+    "⚠️ <b>Xatolik yuz berdi:</b> <i>{error_message}</i>"
 )
 WEBHOOK_ERROR_MESSAGE = (
-    "Xatolik yuz berdi (webhook): {error_message}"
+    "⚠️ <b>Webhook xatosi:</b> <i>{error_message}</i>"
 )
 ANSWER_SAVED_MESSAGE = (
-    "Javoblar muvaffaqiyatli saqlandi:\n"
-    "Test ID: {test_id}\n"
-    "Javoblar: {right_answers}"
+    "✅ <b>Javoblar saqlandi!</b>\n"
+    "🆔 <b>Test ID:</b> <code>{test_id}</code>\n"
+    "📋 <b>Javoblar:</b> <code>{right_answers}</code>"
 )
 ANSWER_CHANNEL_MESSAGE = (
-    "Test ID: {test_id}\n"
-    "Javoblar:\n{formatted_answers}\n"
-    "Saqlangan vaqt: {current_date_time}"
+    "🆔 <b>Test ID:</b> <code>{test_id}</code>\n"
+    "📋 <b>Javoblar:</b>\n{formatted_answers}\n"
+    "⏰ <b>Saqlangan vaqt:</b> <i>{current_date_time}</i>"
 )
 RESULT_CHANNEL_MESSAGE = (
-    "Foydalanuvchi ma'lumotlari:\n"
-    "Ism: {first_name}\n"
-    "Familiya: {last_name}\n"
-    "Username: @{username}\n"
-    "User ID: {user_id}\n"
-    "Jo'natgan vaqt: {submission_time}\n"
-    "\nTest natijalari:\n"
-    "Test ID: {test_id}\n"
-    "Natijalar:\n{results}\n"
-    "To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
+    "👤 <b>Foydalanuvchi ma'lumotlari:</b>\n"
+    "🪪 <b>Ism:</b> <i>{first_name}</i>\n"
+    "🪪 <b>Familiya:</b> <i>{last_name}</i>\n"
+    "💻 <b>Username:</b> @{username}\n"
+    "🆔 <b>User ID:</b> <code>{user_id}</code>\n"
+    "⏰ <b>Jo'natgan vaqt:</b> <i>{submission_time}</i>\n"
+    "\n📊 <b>Test natijalari:</b>\n"
+    "🆔 <b>Test ID:</b> <code>{test_id}</code>\n"
+    "📋 <b>Natijalar:</b>\n{results}\n"
+    "✅ <b>To'g'ri javoblar:</b> <i>{correct_count}/{total_questions}</i> ({percentage:.0f}%)"
 )
 USER_RESULT_MESSAGE = (
-    "Sizning natijalaringiz:\n"
-    "To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
+    "📊 <b>Sizning natijalaringiz:</b>\n"
+    "✅ <b>To'g'ri javoblar:</b> <i>{correct_count}/{total_questions}</i> ({percentage:.0f}%)"
 )
-CORRECT_ANSWER_MESSAGE = "{i}. {user_ans} ✅ (To'g'ri)"
-WRONG_ANSWER_MESSAGE = "{i}. {user_ans} ❌ (Noto'g'ri - to'g'ri javob: {correct_ans})"
-TEST_SUCCESS_MESSAGE = "Bot muvaffaqiyatli ishlayapti."
+CORRECT_ANSWER_MESSAGE = "{i}. {user_ans} ✅ <i>(To'g'ri)</i>"
+WRONG_ANSWER_MESSAGE = "{i}. {user_ans} ❌ <i>(Noto'g'ri - to'g'ri javob: {correct_ans})</i>"
+TEST_SUCCESS_MESSAGE = "✅ <b>Bot muvaffaqiyatli ishlayapti!</b>"
 
 telepot.api.set_proxy('http://proxy.server:3128')
 bot = telepot.Bot(TOKEN)
@@ -108,7 +108,7 @@ def processing(msg):
             return
 
         user_id = msg['from']['id']
-        username = msg['from'].get('username', 'foydalanuvchi')
+        username = msg['from'].get('username', 'Nomalum')
         first_name = msg['from'].get('first_name', 'Nomalum')
         last_name = msg['from'].get('last_name', 'Nomalum')
 
@@ -117,11 +117,11 @@ def processing(msg):
 
             # Start komandasi
             if text == "/start":
-                bot.sendMessage(user_id, WELCOME_MESSAGE)
+                bot.sendMessage(user_id, WELCOME_MESSAGE, parse_mode="HTML")
 
             # Restart komandasi
             elif text == "/restart":
-                bot.sendMessage(user_id, RESTART_MESSAGE)
+                bot.sendMessage(user_id, RESTART_MESSAGE, parse_mode="HTML")
 
             # #answer komandasi
             elif text.startswith("#answer"):
@@ -136,7 +136,7 @@ def processing(msg):
                     answers[test_id] = right_answers
                     save_answers(answers)
 
-                    bot.sendMessage(user_id, ANSWER_SAVED_MESSAGE.format(test_id=test_id, right_answers=right_answers))
+                    bot.sendMessage(user_id, ANSWER_SAVED_MESSAGE.format(test_id=test_id, right_answers=right_answers), parse_mode="HTML")
 
                     # Javoblarni ANSWERS_CHANNEL_ID'ga yuborish
                     formatted_answers = '\n'.join(f"{i+1}) {ans}" for i, ans in enumerate(right_answers))
@@ -144,9 +144,9 @@ def processing(msg):
                     answer_message = ANSWER_CHANNEL_MESSAGE.format(
                         test_id=test_id, formatted_answers=formatted_answers, current_date_time=current_date_time
                     )
-                    bot.sendMessage(ANSWERS_CHANNEL_ID, answer_message)
+                    bot.sendMessage(ANSWERS_CHANNEL_ID, answer_message, parse_mode="HTML")
                 else:
-                    bot.sendMessage(user_id, ERROR_MESSAGE)
+                    bot.sendMessage(user_id, ERROR_MESSAGE, parse_mode="HTML")
 
             # Test natijalarini qayta ishlash
             elif re.match(r'^\d{5}\|[abcd]{20}$', text):
@@ -182,19 +182,19 @@ def processing(msg):
                         total_questions=total_questions,
                         percentage=percentage
                     )
-                    bot.sendMessage(RESULTS_CHANNEL_ID, channel_result)
+                    bot.sendMessage(RESULTS_CHANNEL_ID, channel_result, parse_mode="HTML")
 
                     user_result = USER_RESULT_MESSAGE.format(
                         correct_count=correct_count, total_questions=total_questions, percentage=percentage
                     )
-                    bot.sendMessage(user_id, user_result)
+                    bot.sendMessage(user_id, user_result, parse_mode="HTML")
                 else:
-                    bot.sendMessage(user_id, INVALID_TEST_ID_MESSAGE)
+                    bot.sendMessage(user_id, INVALID_TEST_ID_MESSAGE, parse_mode="HTML")
             else:
                 # Noto'g'ri format
-                bot.sendMessage(user_id, INVALID_FORMAT_MESSAGE)
+                bot.sendMessage(user_id, INVALID_FORMAT_MESSAGE, parse_mode="HTML")
     except Exception as e:
-        bot.sendMessage(user_id, PROCESSING_ERROR_MESSAGE.format(error_message=str(e)))
+        bot.sendMessage(user_id, PROCESSING_ERROR_MESSAGE.format(error_message=str(e)), parse_mode="HTML")
 
 app = Flask(__name__)
 
@@ -208,7 +208,7 @@ def webhook():
             processing(update['callback_query'])
         return 'OK'
     except Exception as e:
-        bot.sendMessage(RESULTS_CHANNEL_ID, WEBHOOK_ERROR_MESSAGE.format(error_message=str(e)))
+        bot.sendMessage(RESULTS_CHANNEL_ID, WEBHOOK_ERROR_MESSAGE.format(error_message=str(e)), parse_mode="HTML")
         return 'ERROR'
 
 @app.route(f'/{SECRET}', methods=["GET"])
