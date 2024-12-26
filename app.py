@@ -57,8 +57,15 @@ def processing(msg):
                     "Botga hush kelibsiz, iltimos javoblaringizni yuboring, "
                     "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
                 )
-                bot.sendMessage(user_id, welcome_text)
-                return
+                bot.sendMessage(user_id, welcome_text)                
+
+            # Restart komandasi
+            elif text == "/restart":
+                welcome_text = (
+                    "Botni restart qildik, iltimos javoblaringizni yuboring, "
+                    "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
+                )
+                bot.sendMessage(user_id, welcome_text)                
 
             # #answer komandasi
             elif text.startswith("#answer"):
@@ -79,8 +86,7 @@ def processing(msg):
                         "Noto'g'ri formatda javob yuborildi. Bot javoblarni saqlay olmadi. "
                         "Iltimos, javoblaringizni quyidagi formatda yuboring: 12350|bcddcadcacbdcdddbadb"
                     )
-                    bot.sendMessage(user_id, error_message)
-                return
+                    bot.sendMessage(user_id, error_message)                
 
             # Test natijalarini qayta ishlash
             elif re.match(r'^\d{5}\|[abcd]{20}$', text):
@@ -103,16 +109,16 @@ def processing(msg):
                     total_questions = len(correct_answers)
                     percentage = (correct_count / total_questions) * 100
 
-                    channel_result = f"Foydalanuvchi @{username} ning @{test_id} bo'yicha natijasi:\n" + '\n'.join(result)
+                    channel_result = f"Foydalanuvchi({user_id}) @{username} ning {test_id} bo'yicha natijasi:\n" + '\n'.join(result)
                     bot.sendMessage(RESULTS_CHANNEL_ID, channel_result)
 
                     user_result = f"To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
                     bot.sendMessage(user_id, user_result)
                 else:
-                    bot.sendMessage(user_id, "Test ID topilmadi. Iltimos, mavjud test IDni yuboring.")
+                    bot.sendMessage(user_id, "Test ID topilmadi. Iltimos, mavjud test IDni yuboring.")                    
             else:
                 # Noto'g'ri format
-                bot.sendMessage(user_id, "Noto'g'ri formatda javob yuborildi. Iltimos, javoblaringizni quyidagi formatda yuboring: 12350|bcddcadcacbdcdddbadb")
+                bot.sendMessage(user_id, "Noto'g'ri formatda javob yuborildi. Iltimos, javoblaringizni quyidagi formatda yuboring: 12350|bcddcadcacbdcdddbadb")            
     except Exception as e:
         bot.sendMessage(user_id, f"Xatolik yuz berdi (processing): {str(e)}")
 
