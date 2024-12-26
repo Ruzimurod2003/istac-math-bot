@@ -13,6 +13,35 @@ ANSWERS_CHANNEL_ID = "-1002286694169"
 RESULTS_CHANNEL_ID = "-1002447423828"
 ANSWERS_FILE = Path("answers.json")
 
+# Bot xabarlari
+WELCOME_MESSAGE = (
+    "Botga hush kelibsiz, iltimos javoblaringizni yuboring, "
+    "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
+)
+RESTART_MESSAGE = (
+    "Botni restart qildik, iltimos javoblaringizni yuboring, "
+    "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
+)
+ERROR_MESSAGE = (
+    "Noto'g'ri formatda javob yuborildi. Bot javoblarni saqlay olmadi. "
+    "Iltimos, javoblaringizni quyidagi formatda yuboring: 12350|bcddcadcacbdcdddbadb"
+)
+INVALID_TEST_ID_MESSAGE = "Test ID topilmadi. Iltimos, mavjud test IDni yuboring."
+INVALID_FORMAT_MESSAGE = (
+    "Noto'g'ri formatda javob yuborildi. Iltimos, javoblaringizni quyidagi formatda yuboring: "
+    "12350|bcddcadcacbdcdddbadb"
+)
+PROCESSING_ERROR_MESSAGE = "Xatolik yuz berdi (processing): {error_message}"
+WEBHOOK_ERROR_MESSAGE = "Xatolik yuz berdi (webhook): {error_message}"
+ANSWER_SAVED_MESSAGE = "Javoblar saqlandi: {test_id} -> {right_answers}"
+RESULT_CHANNEL_MESSAGE = (
+    "Foydalanuvchi({user_id}) @{username} ning {test_id} bo'yicha natijasi:\n{results}"
+)
+USER_RESULT_MESSAGE = "To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
+CORRECT_ANSWER_MESSAGE = "{i}. {user_ans} ✅ (To'g'ri)"
+WRONG_ANSWER_MESSAGE = "{i}. {user_ans} ❌ (Noto'g'ri - to'g'ri javob: {correct_ans})"
+TEST_SUCCESS_MESSAGE = "Bot ishlayapti"
+
 telepot.api.set_proxy('http://proxy.server:3128')
 bot = telepot.Bot(TOKEN)
 bot.setWebhook(URL, max_connections=10)
@@ -53,19 +82,11 @@ def processing(msg):
 
             # Start komandasi
             if text == "/start":
-                welcome_text = (
-                    "Botga hush kelibsiz, iltimos javoblaringizni yuboring, "
-                    "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
-                )
-                bot.sendMessage(user_id, welcome_text)                
+                bot.sendMessage(user_id, WELCOME_MESSAGE)
 
             # Restart komandasi
             elif text == "/restart":
-                welcome_text = (
-                    "Botni restart qildik, iltimos javoblaringizni yuboring, "
-                    "12350|bcddcadcacbdcdddbadb kabi foymatda jo'natashingiz kerak."
-                )
-                bot.sendMessage(user_id, welcome_text)                
+                bot.sendMessage(user_id, RESTART_MESSAGE)
 
             # #answer komandasi
             elif text.startswith("#answer"):
@@ -80,13 +101,9 @@ def processing(msg):
                     answers[test_id] = right_answers
                     save_answers(answers)
 
-                    bot.sendMessage(user_id, f"Javoblar saqlandi: {test_id} -> {right_answers}")
+                    bot.sendMessage(user_id, ANSWER_SAVED_MESSAGE.format(test_id=test_id, right_answers=right_answers))
                 else:
-                    error_message = (
-                        "Noto'g'ri formatda javob yuborildi. Bot javoblarni saqlay olmadi. "
-                        "Iltimos, javoblaringizni quyidagi formatda yuboring: 12350|bcddcadcacbdcdddbadb"
-                    )
-                    bot.sendMessage(user_id, error_message)                
+                    bot.sendMessage(user_id, ERROR_MESSAGE)
 
             # Test natijalarini qayta ishlash
             elif re.match(r'^\d{5}\|[abcd]{20}$', text):
@@ -101,26 +118,30 @@ def processing(msg):
 
                     for i, (user_ans, correct_ans) in enumerate(zip(user_answers, correct_answers), start=1):
                         if user_ans == correct_ans:
-                            result.append(f"{i}. {user_ans} ✅ (To'g'ri)")
+                            result.append(CORRECT_ANSWER_MESSAGE.format(i=i, user_ans=user_ans))
                             correct_count += 1
                         else:
-                            result.append(f"{i}. {user_ans} ❌ (Noto'g'ri - to'g'ri javob: {correct_ans})")
+                            result.append(WRONG_ANSWER_MESSAGE.format(i=i, user_ans=user_ans, correct_ans=correct_ans))
 
                     total_questions = len(correct_answers)
                     percentage = (correct_count / total_questions) * 100
 
-                    channel_result = f"Foydalanuvchi({user_id}) @{username} ning {test_id} bo'yicha natijasi:\n" + '\n'.join(result)
+                    channel_result = RESULT_CHANNEL_MESSAGE.format(
+                        user_id=user_id, username=username, test_id=test_id, results='\n'.join(result)
+                    )
                     bot.sendMessage(RESULTS_CHANNEL_ID, channel_result)
 
-                    user_result = f"To'g'ri javoblar: {correct_count}/{total_questions} ({percentage:.0f}%)"
+                    user_result = USER_RESULT_MESSAGE.format(
+                        correct_count=correct_count, total_questions=total_questions, percentage=percentage
+                    )
                     bot.sendMessage(user_id, user_result)
                 else:
-                    bot.sendMessage(user_id, "Test ID topilmadi. Iltimos, mavjud test IDni yuboring.")                    
+                    bot.sendMessage(user_id, INVALID_TEST_ID_MESSAGE)
             else:
                 # Noto'g'ri format
-                bot.sendMessage(user_id, "Noto'g'ri formatda javob yuborildi. Iltimos, javoblaringizni quyidagi formatda yuboring: 12350|bcddcadcacbdcdddbadb")            
+                bot.sendMessage(user_id, INVALID_FORMAT_MESSAGE)
     except Exception as e:
-        bot.sendMessage(user_id, f"Xatolik yuz berdi (processing): {str(e)}")
+        bot.sendMessage(user_id, PROCESSING_ERROR_MESSAGE.format(error_message=str(e)))
 
 app = Flask(__name__)
 
@@ -134,8 +155,12 @@ def webhook():
             processing(update['callback_query'])
         return 'OK'
     except Exception as e:
-        bot.sendMessage(RESULTS_CHANNEL_ID, f"Xatolik yuz berdi (webhook): {str(e)}")
+        bot.sendMessage(RESULTS_CHANNEL_ID, WEBHOOK_ERROR_MESSAGE.format(error_message=str(e)))
         return 'ERROR'
+
+@app.route(f'/{SECRET}', methods=["GET"])
+def test():
+    return TEST_SUCCESS_MESSAGE
 
 if __name__ == "__main__":
     app.run()
