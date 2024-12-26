@@ -3,6 +3,7 @@ import re
 import json
 from flask import Flask, request
 from pathlib import Path
+from datetime import datetime
 
 # Bot sozlamalari
 USERNAME = "mathruz"
@@ -41,6 +42,11 @@ USER_RESULT_MESSAGE = "To'g'ri javoblar: {correct_count}/{total_questions} ({per
 CORRECT_ANSWER_MESSAGE = "{i}. {user_ans} ✅ (To'g'ri)"
 WRONG_ANSWER_MESSAGE = "{i}. {user_ans} ❌ (Noto'g'ri - to'g'ri javob: {correct_ans})"
 TEST_SUCCESS_MESSAGE = "Bot ishlayapti"
+ANSWER_CHANNEL_MESSAGE = (
+    "Test ID: {test_id}\n"
+    "{formatted_answers}\n"
+    "Saqlangan vaqt: {current_date_time}"
+)
 
 telepot.api.set_proxy('http://proxy.server:3128')
 bot = telepot.Bot(TOKEN)
@@ -102,6 +108,14 @@ def processing(msg):
                     save_answers(answers)
 
                     bot.sendMessage(user_id, ANSWER_SAVED_MESSAGE.format(test_id=test_id, right_answers=right_answers))
+
+                    # Javoblarni ANSWERS_CHANNEL_ID'ga yuborish
+                    formatted_answers = '\n'.join(f"{i+1}) {ans}" for i, ans in enumerate(right_answers))
+                    current_date_time = datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                    answer_message = ANSWER_CHANNEL_MESSAGE.format(
+                        test_id=test_id, formatted_answers=formatted_answers, current_date_time=current_date_time
+                    )
+                    bot.sendMessage(ANSWERS_CHANNEL_ID, answer_message)
                 else:
                     bot.sendMessage(user_id, ERROR_MESSAGE)
 
